@@ -1,0 +1,98 @@
+name: Release
+
+# Trigger when a version tag is pushed (e.g. v0.4.0) or manually via the UI.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v0.4.0)"
+        required: true
+        default: "v0.0.0-dev"
+
+permissions:
+  contents: write       # required to create GitHub Releases and upload assets
+  pull-requests: write  # required to open pull requests from workflow steps
+
+jobs:
+  build-and-release:
+    name: Build PDF & HTML, then publish release
+    runs-on: ubuntu-latest
+
+    steps:
+      # ------------------------------------------------------------------ #
+      # 1. Check out source
+      # ------------------------------------------------------------------ #
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ------------------------------------------------------------------ #
+      # 2. Install Pandoc + LaTeX (xelatex) + CJK fonts
+      # ------------------------------------------------------------------ #
+      - name: Install Pandoc
+        run: |
+          PANDOC_VERSION="3.2.1"
+          curl -fsSL "https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb" \
+            -o /tmp/pandoc.deb
+          sudo dpkg -i /tmp/pandoc.deb
+
+      - name: Install LaTeX and CJK fonts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            texlive-xetex \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            texlive-lang-cjk \
+            fonts-noto-cjk
+
+      # ------------------------------------------------------------------ #
+      # 3. Build artifacts
+      # ------------------------------------------------------------------ #
+      - name: Build PDF and HTML (English)
+        run: bash scripts/build.sh en
+
+      - name: Build PDF and HTML (Traditional Chinese)
+        run: bash scripts/build.sh zh-TW
+
+      # ------------------------------------------------------------------ #
+      # 4. Determine the release tag
+      # ------------------------------------------------------------------ #
+      - name: Resolve release tag
+        id: tag
+        run: |
+          if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            echo "value=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=${{ github.event.inputs.tag }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ------------------------------------------------------------------ #
+      # 5. Create GitHub Release and upload assets
+      # ------------------------------------------------------------------ #
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.value }}
+          name: "Data Structures in Practice ${{ steps.tag.outputs.value }}"
+          body: |
+            ## Release ${{ steps.tag.outputs.value }}
+
+            Downloadable PDF and HTML builds of *Data Structures in Practice:
+            A Hardware-Aware Approach for System Software Engineers*.
+
+            | Format | Language |
+            |--------|----------|
+            | PDF    | English  |
+            | HTML   | English  |
+            | PDF    | Traditional Chinese (zh-TW) |
+            | HTML   | Traditional Chinese (zh-TW) |
+          files: |
+            dist/data-structures-in-practice-en.pdf
+            dist/data-structures-in-practice-en.html
+            dist/data-structures-in-practice-zh-TW.pdf
+            dist/data-structures-in-practice-zh-TW.html
+          draft: false
+          prerelease: ${{ contains(steps.tag.outputs.value, '-') }}
