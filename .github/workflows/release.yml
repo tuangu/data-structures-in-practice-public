@@ -13,7 +13,8 @@ on:
         default: "v0.0.0-dev"
 
 permissions:
-  contents: write   # required to create GitHub Releases and upload assets
+  contents: write       # required to create GitHub Releases and upload assets
+  pull-requests: write  # required to open pull requests from workflow steps
 
 jobs:
   build-and-release:
