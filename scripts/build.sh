@@ -83,6 +83,8 @@ build_html() {
     --toc-depth=2 \
     --metadata lang="${lang}" \
     --css "https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css" \
+    --lua-filter "${SCRIPT_DIR}/filters/mermaid-html.lua" \
+    --include-after-body "${SCRIPT_DIR}/mermaid-init.html" \
     --output "${output_file}"
 
   echo "  -> ${output_file}"
@@ -112,6 +114,8 @@ build_pdf() {
     fi
   done
 
+  export MERMAID_PUPPETEER_CONFIG="${SCRIPT_DIR}/puppeteer-config.json"
+
   pandoc "${input_files[@]}" \
     --from markdown \
     --to pdf \
@@ -121,6 +125,7 @@ build_pdf() {
     --metadata lang="${lang}" \
     --variable geometry:margin=1in \
     --variable fontsize=11pt \
+    --lua-filter "${SCRIPT_DIR}/filters/mermaid-pdf.lua" \
     "${extra_args[@]}" \
     --output "${output_file}"
 
