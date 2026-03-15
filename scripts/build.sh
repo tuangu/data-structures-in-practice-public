@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Build PDF and HTML outputs for both English and Chinese versions of the book.
+# Build PDF and/or HTML outputs for both English and Chinese versions of the book.
 # Usage:
-#   ./scripts/build.sh [en|zh-TW|all]  (defaults to all)
+#   ./scripts/build.sh [en|zh-TW|all]            (defaults to all, builds PDF + HTML)
+#   ./scripts/build.sh [en|zh-TW|all] --html-only (builds HTML only, no LaTeX needed)
 #
 # Outputs written to dist/
 #   dist/data-structures-in-practice-en.pdf
@@ -16,6 +17,10 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 DIST_DIR="${REPO_ROOT}/dist"
 
 TARGET="${1:-all}"
+HTML_ONLY=false
+if [[ "${2:-}" == "--html-only" ]]; then
+  HTML_ONLY=true
+fi
 
 mkdir -p "${DIST_DIR}"
 
@@ -124,13 +129,17 @@ build_pdf() {
 
 build_en() {
   local manuscript_dir="${REPO_ROOT}/manuscript"
-  build_pdf  "${manuscript_dir}" "${DIST_DIR}/data-structures-in-practice-en.pdf"  "en"
+  if [[ "${HTML_ONLY}" == false ]]; then
+    build_pdf  "${manuscript_dir}" "${DIST_DIR}/data-structures-in-practice-en.pdf"  "en"
+  fi
   build_html "${manuscript_dir}" "${DIST_DIR}/data-structures-in-practice-en.html" "en"
 }
 
 build_zh_TW() {
   local manuscript_dir="${REPO_ROOT}/manuscript-zh-TW"
-  build_pdf  "${manuscript_dir}" "${DIST_DIR}/data-structures-in-practice-zh-TW.pdf"  "zh-TW"
+  if [[ "${HTML_ONLY}" == false ]]; then
+    build_pdf  "${manuscript_dir}" "${DIST_DIR}/data-structures-in-practice-zh-TW.pdf"  "zh-TW"
+  fi
   build_html "${manuscript_dir}" "${DIST_DIR}/data-structures-in-practice-zh-TW.html" "zh-TW"
 }
 
