@@ -54,7 +54,13 @@ jobs:
             fonts-noto-cjk
 
       # ------------------------------------------------------------------ #
-      # 3. Build artifacts
+      # 3. Install mermaid-cli (mmdc) for diagram rendering
+      # ------------------------------------------------------------------ #
+      - name: Install mermaid-cli
+        run: npm install -g @mermaid-js/mermaid-cli
+
+      # ------------------------------------------------------------------ #
+      # 4. Build artifacts
       # ------------------------------------------------------------------ #
       - name: Build PDF and HTML (English)
         run: bash scripts/build.sh en
@@ -63,7 +69,7 @@ jobs:
         run: bash scripts/build.sh zh-TW
 
       # ------------------------------------------------------------------ #
-      # 4. Determine the release tag
+      # 5. Determine the release tag
       # ------------------------------------------------------------------ #
       - name: Resolve release tag
         id: tag
@@ -75,7 +81,7 @@ jobs:
           fi
 
       # ------------------------------------------------------------------ #
-      # 5. Create GitHub Release and upload assets
+      # 6. Create GitHub Release and upload assets
       # ------------------------------------------------------------------ #
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
