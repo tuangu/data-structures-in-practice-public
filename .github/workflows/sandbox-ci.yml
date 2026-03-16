@@ -1,0 +1,51 @@
+name: Sandbox CI
+
+on:
+  push:
+    branches: ["main", "claude/**"]
+    paths:
+      - "sandbox/**"
+  pull_request:
+    paths:
+      - "sandbox/**"
+  workflow_dispatch:
+
+jobs:
+  build-and-run:
+    name: Cross-compile and run under QEMU
+    runs-on: ubuntu-24.04
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────────── #
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Install cross toolchain and QEMU ─────────────────────────────── #
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            gcc-riscv64-linux-gnu \
+            binutils-riscv64-linux-gnu \
+            qemu-user-static \
+            libc6-dev-riscv64-cross \
+            make
+
+      # ── 3. Build all exercises for RISC-V ───────────────────────────────── #
+      - name: Build (ARCH=riscv64)
+        working-directory: sandbox
+        run: make ARCH=riscv64 all
+
+      # ── 4. Run each exercise under qemu-riscv64-static ──────────────────── #
+      - name: Run exercises under QEMU (ARCH=riscv64)
+        working-directory: sandbox
+        run: make ARCH=riscv64 run
+
+      # ── 5. Verify x86_64 native build and run ───────────────────────────── #
+      - name: Build (ARCH=x86_64)
+        working-directory: sandbox
+        run: make ARCH=x86_64 all
+
+      - name: Run exercises (ARCH=x86_64)
+        working-directory: sandbox
+        run: make ARCH=x86_64 run

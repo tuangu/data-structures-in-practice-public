@@ -1,0 +1,12 @@
+services:
+  sandbox:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dsp-sandbox:latest
+    volumes:
+      - .:/sandbox
+    working_dir: /sandbox
+    stdin_open: true
+    tty: true
+    command: ["make", "ARCH=riscv64", "all"]
