@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define MAX_ORDER    32
 #define INSERT_COUNT 100000

@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <pthread.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define ITERS      10000000
 #define CACHE_LINE 64

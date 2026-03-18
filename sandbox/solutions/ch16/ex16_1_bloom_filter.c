@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define FILTER_BITS  (1 << 16)     /* 64 KiB bit array */
 #define FILTER_BYTES (FILTER_BITS / 8)

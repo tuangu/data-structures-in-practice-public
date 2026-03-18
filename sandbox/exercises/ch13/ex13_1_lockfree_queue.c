@@ -18,7 +18,7 @@
 #include <stdint.h>
 #include <stdatomic.h>
 #include <pthread.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define QUEUE_CAP  (1 << 12)   /* must be power of 2 */
 #define MASK       (QUEUE_CAP - 1)

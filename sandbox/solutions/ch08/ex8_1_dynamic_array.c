@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define PUSH_COUNT 1000000
 

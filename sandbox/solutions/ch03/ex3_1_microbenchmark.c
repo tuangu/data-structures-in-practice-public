@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define INNER_OPS   1000
 #define LIST_NODES  4096   /* > L1 + L2 on most embedded targets */

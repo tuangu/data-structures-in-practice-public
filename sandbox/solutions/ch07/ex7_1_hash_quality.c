@@ -25,7 +25,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <math.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define TABLE_SIZE  1024
 #define NUM_KEYS    10000

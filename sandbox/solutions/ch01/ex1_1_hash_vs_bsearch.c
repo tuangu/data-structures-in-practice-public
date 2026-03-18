@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define NUM_ENTRIES   500
 #define TABLE_BUCKETS 1024

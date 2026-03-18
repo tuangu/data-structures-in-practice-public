@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define OPS    100000
 #define D_BIN  2

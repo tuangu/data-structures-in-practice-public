@@ -24,7 +24,7 @@
  */
 #include <stdio.h>
 #include <stdint.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define ROWS 512
 #define COLS 512

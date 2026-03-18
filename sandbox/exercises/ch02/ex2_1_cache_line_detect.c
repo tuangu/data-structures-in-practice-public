@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define ARRAY_BYTES (4 * 1024 * 1024)   /* 4 MiB — well above any L3 */
 #define MAX_STRIDE  512                  /* bytes */
