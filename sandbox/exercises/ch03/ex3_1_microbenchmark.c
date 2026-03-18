@@ -14,7 +14,7 @@
  */
 #include <stdio.h>
 #include <stdint.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define INNER_OPS 1000
 

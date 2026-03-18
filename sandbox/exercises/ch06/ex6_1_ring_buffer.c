@@ -11,7 +11,7 @@
  */
 #include <stdio.h>
 #include <stdint.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define CAP  (1 << 14)   /* 16 384 — must be power of 2 */
 #define MASK (CAP - 1)

@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include "../../common/benchmark.h"
+#include "../common/benchmark.h"
 
 #define MAX_NODES    256
 #define MAX_PROPS    16
